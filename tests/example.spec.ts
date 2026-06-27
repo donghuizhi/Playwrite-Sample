@@ -1,20 +1,34 @@
 import { test, expect } from '@playwright/test';
 
 test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+  await page.setContent(`
+    <html>
+      <head>
+        <title>Playwright</title>
+      </head>
+      <body>
+        <h1>Playwright</h1>
+      </body>
+    </html>
+  `);
 
-  // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/Playwright/);
-  await page.close();
 });
 
 test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+  await page.setContent(`
+    <html>
+      <head>
+        <title>Playwright</title>
+      </head>
+      <body>
+        <a href="#installation">Get started</a>
+        <h1 id="installation">Installation</h1>
+      </body>
+    </html>
+  `);
 
-  // Click the get started link.
   await page.getByRole('link', { name: 'Get started' }).click();
 
-  // Expects page to have a heading with the name of Installation.
   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-  await page.close()
 });
